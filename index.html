@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皮克敏飾品究極圖鑑</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* 載入您提供的芫荽體與華康少女體 */
+        @font-face {
+            font-family: 'Iansui';
+            src: url('Iansui-Regular.ttf');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'GirlFont';
+            src: url('華康少女文字W5.TTF');
+            font-display: swap;
+        }
+
+        body {
+            /* 優先順序：芫荽體 -> iPhone 圓體 -> 三星華康少女體 -> 系統預設 */
+            font-family: 'Iansui', '芫荽體', 'Apple LiGothic Medium', 'PingFang TC', 'STHeitiTC-Light', 'GirlFont', '華康少女體', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(180deg, #92A8D1 0%, #F7CAC9 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #334155;
+            padding-bottom: 20px;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+
+        /* 文字齊平優化：左右對齊讓邊緣更俐落 */
+        .text-justify { text-align: justify; text-justify: inter-ideograph; }
+
+        /* 標題與按鈕的跨裝置適配 */
+        h1 { white-space: nowrap; letter-spacing: -0.02em; }
+
+        @media (max-width: 640px) {
+            body { font-size: 14px; }
+            h1 { font-size: 1.65rem !important; text-align: center; width: 100%; margin-bottom: 1.5rem; }
+            .btn-fancy { padding: 0.75rem 1rem !important; font-size: 0.85rem !important; gap: 0.4rem !important; }
+            .grid-cols-mobile-single { grid-template-columns: 1fr !important; }
+            .modal-content-width { max-width: 95% !important; padding: 1.25rem !important; }
+        }
+
+        /* 按鈕視覺強化：確保按鈕框體感明顯 */
+        .btn-fancy {
+            padding: 1rem 1.8rem;
+            font-weight: 900;
+            border-radius: 2.5rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .btn-fancy:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); }
+        .btn-fancy:active { transform: scale(0.95); }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- 四段狀態顏色系統 --- */
+        .pikmin-dot {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            user-select: none;
+            border: 2.5px solid transparent;
+        }
+        .pikmin-dot:active { transform: scale(0.9); }
+        .pikmin-dot:hover { transform: translateY(-4px); }
+
+        .st-0 { background-color: #f1f5f9 !important; color: #cbd5e1 !important; border: 1.5px dashed #cbd5e1 !important; }
+        
+        /* 階層色票定義 */
+        .dot-red.st-1 { background-color: #fee2e2; color: #b91c1c; border-color: #fca5a5; } 
+        .dot-red.st-2 { background-color: #fca5a5; color: white; } 
+        .dot-red.st-3 { background-color: #ef4444; color: white; border-color: white; box-shadow: 0 0 15px #ef4444; }
+
+        .dot-yellow.st-1 { background-color: #fef9c3; color: #854d0e; border-color: #fde047; }
+        .dot-yellow.st-2 { background-color: #fde047; color: #854d0e; }
+        .dot-yellow.st-3 { background-color: #facc15; color: #854d0e; border-color: white; box-shadow: 0 0 15px #facc15; }
+
+        .dot-blue.st-1 { background-color: #dbeafe; color: #1e40af; border-color: #93c5fd; }
+        .dot-blue.st-2 { background-color: #93c5fd; color: white; }
+        .dot-blue.st-3 { background-color: #2563eb; color: white; border-color: white; box-shadow: 0 0 15px #2563eb; }
+
+        .dot-white.st-1 { background-color: #ffffff; color: #475569; border: 1.5px solid #e2e8f0; }
+        .dot-white.st-2 { background-color: #f1f5f9; color: #334155; }
+        .dot-white.st-3 { background-color: #ffffff; color: #334155; border: 2.5px solid #92A8D1; box-shadow: 0 0 15px white; }
+
+        .dot-purple.st-1 { background-color: #f3e8ff; color: #6b21a8; border-color: #d8b4fe; }
+        .dot-purple.st-2 { background-color: #d8b4fe; color: white; }
+        .dot-purple.st-3 { background-color: #9333ea; color: white; border-color: white; box-shadow: 0 0 15px #9333ea; }
+
+        .dot-rock.st-1 { background-color: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+        .dot-rock.st-2 { background-color: #cbd5e1; color: white; }
+        .dot-rock.st-3 { background-color: #475569; color: white; border-color: white; box-shadow: 0 0 15px #475569; }
+
+        .dot-pink.st-1 { background-color: #fce7f3; color: #9d174d; border-color: #f9a8d4; }
+        .dot-pink.st-2 { background-color: #f9a8d4; color: white; }
+        .dot-pink.st-3 { background-color: #db2777; color: white; border-color: white; box-shadow: 0 0 15px #db2777; }
+
+        .dot-ice.st-1 { background-color: #ecfeff; color: #155e75; border-color: #67e8f9; }
+        .dot-ice.st-2 { background-color: #67e8f9; color: white; }
+        .dot-ice.st-3 { background-color: #0891b2; color: white; border-color: white; box-shadow: 0 0 15px #0891b2; }
+
+        .status-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 11px;
+            background: white;
+            border-radius: 50%;
+            width: 21px;
+            height: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .jump-link {
+            padding: 0.6rem 1.4rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #92A8D1;
+            border-radius: 2.5rem;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #475569;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .jump-link:hover { background: #92A8D1; color: white; transform: translateY(-3px); }
+
+        details summary { list-style: none; outline: none; }
+        details summary::-webkit-details-marker { display: none; }
+
+        .modal-bg { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #92A8D1; border-radius: 10px; }
+
+        .btn-serenity { background-color: #92A8D1; color: white; }
+        .btn-rose { background-color: #F7CAC9; color: #475569; }
+
+        #btn-reset.danger-stage { background-color: #ef4444 !important; color: white !important; border-color: #f87171 !important; }
+        #btn-delete.danger-stage { color: white !important; background-color: #ef4444 !important; border-radius: 9999px; padding: 0.5rem 1rem; text-decoration: none !important; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-10">
+        <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+            <div class="lg:flex-1 text-center lg:text-left">
+                <h1 class="text-3xl md:text-5xl font-black text-white drop-shadow-lg tracking-tighter">💎 皮克敏飾品究極圖鑑</h1>
+            </div>
+            
+            <!-- 控制按鈕列 -->
+            <div class="flex flex-col gap-4 w-full lg:w-auto">
+                <!-- 第一列：操作類 (新增、指南) -->
+                <div class="flex justify-center gap-3 w-full">
+                    <button onclick="openAddModal()" class="btn-fancy bg-emerald-500 text-white border-emerald-300 w-1/2 sm:w-auto">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                        <span>新增飾品</span>
+                    </button>
+                    <button onclick="openHelp()" class="btn-fancy bg-white text-[#576d94] border-[#92A8D1] w-1/2 sm:w-auto">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"></path></svg>
+                        <span>新手指南</span>
+                    </button>
+                </div>
+                <!-- 第二列：系統類 (備份、讀取、重置) -->
+                <div class="flex flex-wrap justify-center gap-3 w-full">
+                    <button onclick="exportData()" class="btn-fancy btn-rose flex-1 sm:flex-initial text-sm !px-4">💾 備份進度</button>
+                    <button onclick="triggerImport()" class="btn-fancy btn-serenity flex-1 sm:flex-initial text-sm !px-4">📂 讀取備份</button>
+                    <button id="btn-reset" onclick="resetDataWithConfirm()" class="btn-fancy bg-slate-200 text-slate-500 border-slate-300 flex-1 sm:flex-initial text-sm !px-4">🧹 恢復預設</button>
+                    <input type="file" id="importFile" class="hidden" onchange="importData(event)">
+                </div>
+            </div>
+        </div>
+
+        <!-- 蒐集看板 -->
+        <details open class="mt-12 group">
+            <summary class="glass-card p-5 md:p-6 cursor-pointer flex justify-between items-center hover:bg-white transition-all">
+                <div class="flex items-center gap-4">
+                    <div class="w-2.5 h-8 bg-blue-400 rounded-full shadow-sm"></div>
+                    <h2 class="text-xl md:text-2xl font-black text-slate-700">🏆 飾品蒐集進度看板</h2>
+                </div>
+                <div class="text-slate-400 group-open:rotate-180 transition-transform"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div>
+            </summary>
+            <div class="mt-2 glass-card p-6 grid grid-cols-1 lg:grid-cols-4 gap-8 items-center border-2 border-white grid-cols-mobile-single">
+                <div class="lg:col-span-3">
+                    <div class="flex justify-between items-end mb-3">
+                        <span class="font-black text-slate-500 text-xs uppercase tracking-widest">目前圖鑑達成率</span>
+                        <span id="progress-text" class="text-lg md:text-xl font-black text-blue-600">0% (0/0)</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-5 overflow-hidden border-2 border-white shadow-inner">
+                        <div id="progress-bar" class="h-full btn-serenity transition-all duration-1000 ease-out" style="width: 0%"></div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-8 text-[13px] font-black text-slate-400 uppercase">
+                        <span class="flex items-center gap-2">🌱 <span id="stat-seedling">花盆: 0</span></span>
+                        <span class="flex items-center gap-2">🚶 <span id="stat-standard">一般: 0</span></span>
+                        <span class="flex items-center gap-2">💎 <span id="stat-decor">飾品: 0</span></span>
+                    </div>
+                </div>
+                <div class="bg-white/60 p-5 rounded-3xl border border-white/50 shadow-inner text-center sm:text-left">
+                    <h3 class="font-black text-[10px] uppercase text-slate-400 mb-2">今日雷達 🛰️</h3>
+                    <div id="today-hunt" class="text-sm font-black text-slate-700 leading-snug">正在掃描大隊目標...</div>
+                </div>
+            </div>
+        </details>
+
+        <!-- 搜尋功能區塊 -->
+        <div class="mt-8 glass-card p-4 md:p-5 flex items-center gap-4 transition-all focus-within:ring-4 focus-within:ring-white/80 border-2 border-white/60">
+            <svg class="text-slate-400 w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="search-input" placeholder="尋找飾品？請輸入關鍵字（例如：瑪莉歐、咖啡廳）..." class="w-full bg-transparent border-none outline-none font-black text-slate-700 placeholder-slate-400 text-base md:text-lg" oninput="handleSearch()">
+        </div>
+
+        <!-- 快速跳轉區 -->
+        <details open class="mt-4 group" id="jump-section">
+            <summary class="glass-card p-5 md:p-6 cursor-pointer flex justify-between items-center hover:bg-white transition-all">
+                <div class="flex items-center gap-4">
+                    <div class="w-2.5 h-8 bg-amber-400 rounded-full shadow-sm"></div>
+                    <h2 class="text-xl md:text-3xl font-black text-slate-700 tracking-tight uppercase">⚡ 快速跳轉飾品區</h2>
+                </div>
+                <div class="text-slate-400 group-open:rotate-180 transition-transform"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div>
+            </summary>
+            <div class="mt-2 glass-card p-6 border-2 border-white space-y-8">
+                <div>
+                    <h4 class="text-xs font-black text-rose-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                        期間限定活動
+                    </h4>
+                    <div id="jump-list-event" class="flex flex-wrap gap-3"></div>
+                </div>
+                <div class="pt-6 border-t border-slate-100">
+                    <h4 class="text-xs font-black text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 20L3 17V4L9 7M9 20L15 17M9 20V7M15 17L21 20V7L15 4M15 17V4M9 7L15 4"></path></svg>
+                        地點圖鑑
+                    </h4>
+                    <div id="jump-list-normal" class="flex flex-wrap gap-3"></div>
+                </div>
+            </div>
+        </details>
+    </header>
+
+    <main class="max-w-6xl mx-auto space-y-12 min-h-[50vh]">
+        <!-- 期間限定區 -->
+        <details open class="group" id="event-section">
+            <summary class="flex items-center justify-between cursor-pointer mb-6 btn-rose p-6 md:p-8 rounded-[2.5rem] shadow-xl border-4 border-white/50">
+                <div class="flex items-center gap-4 text-slate-800">
+                    <div class="bg-white/40 p-3 rounded-2xl shadow-inner"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg></div>
+                    <h2 class="text-2xl md:text-4xl font-black">期間限定活動</h2>
+                    <span class="bg-white text-rose-500 text-[10px] px-4 py-1.5 rounded-full font-black animate-pulse shadow-sm tracking-widest uppercase">LIVE</span>
+                </div>
+                <div class="group-open:rotate-180 transition-transform"><svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div>
+            </summary>
+            <div id="active-events" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 grid-cols-mobile-single"></div>
+            <details class="mt-10 group/sub" id="expired-section">
+                <summary class="text-white/80 font-black cursor-pointer text-sm md:text-base inline-flex items-center gap-3 bg-white/20 px-8 py-4 rounded-3xl hover:bg-white/30 transition-all border border-white/40 shadow-sm">
+                    <span>檢視歷史紀錄 (已結束活動)</span>
+                    <svg class="w-5 h-5 group-open/sub:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                </summary>
+                <div id="expired-events" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 grid-cols-mobile-single"></div>
+            </details>
+        </details>
+
+        <!-- 地點圖鑑區 -->
+        <details open class="group" id="normal-section">
+            <summary class="flex items-center justify-between cursor-pointer mb-6 btn-serenity p-6 md:p-8 rounded-[2.5rem] shadow-xl border-4 border-white/50">
+                <div class="flex items-center gap-4 text-white">
+                    <div class="bg-white/30 p-3 rounded-2xl shadow-inner">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 20L3 17V4L9 7M9 20L15 17M9 20V7M15 17L21 20V7L15 4M15 17V4M9 7L15 4"></path></svg>
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-black">地點圖鑑</h2>
+                </div>
+                <div class="text-white/60 group-open:rotate-180 transition-transform"><svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div>
+            </summary>
+            <div id="normal-decors" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 grid-cols-mobile-single"></div>
+        </details>
+
+        <div id="no-results" class="hidden text-center py-20 text-slate-500 font-black text-xl">
+            找不到符合「<span id="search-keyword"></span>」的飾品分類喔 🍃
+        </div>
+    </main>
+
+    <!-- Footer: 免責聲明 -->
+    <footer class="mt-16 text-center text-slate-500 text-sm font-bold space-y-2 pb-10 border-t-2 border-white/30 pt-8 max-w-4xl mx-auto">
+        <p>⚠️ 本程式與 Nintendo (任天堂)、Niantic 無關，為愛好者製作之非官方第三方工具。</p>
+    </footer>
+
+    <!-- Modal: Import Options (載入備份選項面板 - 全新三選項升級版) -->
+    <div id="import-modal" class="fixed inset-0 modal-bg z-[60] hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-6 md:p-8 shadow-2xl border-4 border-white">
+            <h2 class="text-2xl md:text-3xl font-black text-slate-700 mb-4 border-b-2 border-slate-100 pb-4">📂 載入備份檔案</h2>
+            <p class="text-slate-500 font-bold mb-6 text-sm">我們發現您讀取了一份備份檔，請根據您的需求選擇合併方式：</p>
+            
+            <div class="space-y-4">
+                <button onclick="executeImport('import_progress')" class="w-full text-left p-4 rounded-2xl border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors group shadow-sm active:scale-95">
+                    <div class="text-blue-700 font-black text-lg mb-1 flex items-center gap-2">
+                        <span>📱 轉移設備 (載入進度至最新款式)</span>
+                    </div>
+                    <div class="text-blue-600/80 text-xs font-bold leading-snug text-justify">
+                        適合換新手機！保留目前網頁上「最新的飾品款式」，並將備份檔中的「舊蒐集進度」完美轉移過來。
+                    </div>
+                </button>
+
+                <button onclick="executeImport('import_structure')" class="w-full text-left p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50 hover:bg-emerald-100 transition-colors group shadow-sm active:scale-95">
+                    <div class="text-emerald-700 font-black text-lg mb-1 flex items-center gap-2">
+                        <span>✨ 更新款式包 (保留我的進度)</span>
+                    </div>
+                    <div class="text-emerald-600/80 text-xs font-bold leading-snug text-justify">
+                        適合接收朋友的新款式！強制採用備份檔中的「全新分類與款式」，並將您現在手機裡的蒐集進度保留貼合上去。
+                    </div>
+                </button>
+
+                <button onclick="executeImport('overwrite')" class="w-full text-left p-4 rounded-2xl border-2 border-rose-200 bg-rose-50 hover:bg-rose-100 transition-colors group shadow-sm active:scale-95">
+                    <div class="text-rose-700 font-black text-lg mb-1 flex items-center gap-2">
+                        <span>♻️ 完全覆蓋 (一模一樣還原)</span>
+                    </div>
+                    <div class="text-rose-600/80 text-xs font-bold leading-snug text-justify">
+                        將您的圖鑑完全替換成備份檔案中的狀態，款式結構與進度皆以備份檔為準。
+                    </div>
+                </button>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button onclick="closeImportModal()" class="text-slate-400 font-black hover:text-slate-600 transition-all px-6 py-2">取消載入</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Help -->
+    <div id="help-modal" class="fixed inset-0 modal-bg z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-4xl p-6 md:p-12 shadow-2xl overflow-y-auto max-h-[85vh] border-4 border-white modal-content-width">
+            <h2 class="text-2xl md:text-4xl font-black text-[#576d94] mb-10 border-b-4 border-blue-100 pb-5 text-center">
+                💎 新手指南：皮友圖鑑養成手冊
+            </h2>
+            
+            <div class="space-y-12">
+                <!-- 使用流程說明 -->
+                <div class="p-6 md:p-10 bg-emerald-50 rounded-[2rem] border-l-8 border-emerald-400 shadow-sm">
+                    <h3 class="font-black text-emerald-800 text-xl md:text-2xl mb-8">📖 使用流程說明</h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        
+                        <div class="bg-white/80 p-5 rounded-2xl shadow-sm border border-slate-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-slate-500 text-lg font-black shrink-0">0. 尚未撿到</h4>
+                                <span class="text-[11px] text-slate-400 font-black tracking-tighter text-right shrink-0">(尚未開始)</span>
+                            </div>
+                            <div class="flex gap-4 items-start">
+                                <div class="pikmin-dot st-0 dot-red !w-12 !h-12 flex-shrink-0 shadow-sm">紅</div>
+                                <p class="text-slate-400 text-sm font-bold text-justify leading-relaxed flex-1">
+                                    按鈕呈現灰底虛線，代表目前尚未在遊戲中獲得該皮克敏的花盆。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/80 p-5 rounded-2xl shadow-sm border border-emerald-100">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-emerald-700 text-lg font-black shrink-0">1. 撿到花盆</h4>
+                                <span class="text-[11px] text-emerald-600 font-black tracking-tighter text-right shrink-0">(點擊按鈕 1 次)</span>
+                            </div>
+                            <div class="flex gap-4 items-start">
+                                <div class="pikmin-dot st-1 dot-red !w-12 !h-12 flex-shrink-0 shadow-sm">紅<div class="status-badge">🌱</div></div>
+                                <p class="text-slate-500 text-sm font-bold text-justify leading-relaxed flex-1">
+                                    撿到花盆後點擊，標記為「花盆 🌱」。代表正在培育皮克敏當中，或者撿到花盆尚未培育。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/80 p-5 rounded-2xl shadow-sm border border-blue-100">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-blue-700 text-lg font-black shrink-0">2. 培育成功</h4>
+                                <span class="text-[11px] text-blue-600 font-black tracking-tighter text-right shrink-0">(點擊按鈕 2 次)</span>
+                            </div>
+                            <div class="flex gap-4 items-start">
+                                <div class="pikmin-dot st-2 dot-red !w-12 !h-12 flex-shrink-0 shadow-sm">紅<div class="status-badge">🚶</div></div>
+                                <p class="text-slate-500 text-sm font-bold text-justify leading-relaxed flex-1">
+                                    培育成功後點擊，標記為「一般 🚶」。代表已獲得一般型態，正努力累積 4 顆心。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/80 p-5 rounded-2xl shadow-sm border border-rose-100">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-rose-700 text-lg font-black shrink-0">3. 拿到飾品</h4>
+                                <span class="text-[11px] text-rose-600 font-black tracking-tighter text-right shrink-0">(點擊按鈕 3 次)</span>
+                            </div>
+                            <div class="flex gap-4 items-start">
+                                <div class="pikmin-dot st-3 dot-red !w-12 !h-12 flex-shrink-0 shadow-sm">紅<div class="status-badge">💎</div></div>
+                                <p class="text-slate-500 text-sm font-bold text-justify leading-relaxed flex-1">
+                                    拿到飾品後點擊標記為「飾品 💎」。只有此型態會正式計入看板的達成率喔！
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[#92A8D1]/10 p-5 rounded-3xl border-2 border-dashed border-[#92A8D1]">
+                            <h4 class="text-[#576d94] text-lg mb-3 flex items-center gap-2 font-black">🔍 如何快速搜尋目標？</h4>
+                            <ul class="space-y-3 list-none text-sm font-bold">
+                                <li class="flex items-start gap-2"><span class="bg-[#92A8D1] text-white p-1 rounded-lg shrink-0">⌨️</span> <span class="text-justify text-blue-600">（全新功能）直接在網頁上方的「搜尋列」輸入關鍵字（例如：瑪莉歐、咖啡店），系統會自動為您即時篩選出想要的分類喔！</span></li>
+                                <li class="flex items-start gap-2"><span class="bg-[#92A8D1] text-white p-1 rounded-lg shrink-0">⚡</span> <span class="text-justify">點頂端「快速跳轉區」按鈕，頁面自動飛到該分類。</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 按鈕功能介紹 -->
+                <div class="p-6 md:p-10 bg-rose-50 rounded-[2rem] border-l-8 border-[#F7CAC9] shadow-sm">
+                    <h3 class="font-black text-[#475569] text-xl md:text-2xl mb-8">🛠️ 按鈕功能介紹</h3>
+                    <div class="grid grid-cols-1 gap-8">
+                        
+                        <div class="bg-white/80 p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row gap-6">
+                            <div class="shrink-0 flex flex-col gap-2">
+                                <div class="btn-fancy btn-rose !py-2 !px-6 text-xs w-full md:w-44 !cursor-default !shadow-none">💾 備份進度</div>
+                                <div class="btn-fancy btn-serenity !py-2 !px-6 text-xs w-full md:w-44 !cursor-default !shadow-none">📂 讀取備份</div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-[#475569] font-black mb-2 text-lg">進度備份與智慧還原</h5>
+                                <p class="text-slate-500 text-sm font-bold text-justify leading-relaxed">
+                                    紀錄存於瀏覽器。點擊「備份進度」可下載 JSON 檔；換新機或更新圖鑑時點「讀取備份」選取該檔，系統會彈出全新「智慧合併面板」，供您自由選擇是要轉移設備、更新款式，還是完全還原喔！
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/80 p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row gap-6">
+                            <div class="shrink-0 flex flex-col items-center">
+                                <div class="btn-fancy bg-emerald-500 text-white border-emerald-300 w-full md:w-44 !cursor-default !shadow-none">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                                    <span>新增飾品</span>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-emerald-700 font-black mb-2 text-lg">新增飾品</h5>
+                                <p class="text-slate-500 text-sm font-bold text-justify leading-relaxed">
+                                    官方若推出新活動或新地點，點擊此處即可自行擴充。系統會自動根據屬性（地點或活動）歸類定位。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/80 p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row gap-6">
+                            <div class="shrink-0 flex flex-col items-center">
+                                <div class="w-12 h-12 bg-white border-2 border-slate-100 rounded-2xl flex items-center justify-center text-slate-400">
+                                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00 2 2h11a2 2 0 00 2-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-[#576d94] font-black mb-2 text-lg">鉛筆按鈕 (修改)</h5>
+                                <p class="text-slate-500 text-sm font-bold text-justify leading-relaxed">
+                                    位於飾品標題旁。點開可修改大類名稱、截止日，或是設定特定款式說明（如：金帽、一般）。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/80 p-6 rounded-3xl border border-rose-100 flex flex-col md:flex-row gap-6">
+                            <div class="shrink-0 flex flex-col items-center">
+                                <div class="btn-fancy bg-slate-200 text-slate-500 border-slate-300 w-full md:w-44 !cursor-default !shadow-none">🧹 恢復預設</div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-slate-600 font-black mb-2 text-lg">恢復預設 (重置進度)</h5>
+                                <p class="text-slate-500 text-sm font-bold text-justify leading-relaxed">
+                                    用於清空所有紀錄重新開始。具備兩次點擊確認機制，防止手滑誤刪。**注意：現在此按鈕只會清除進度，完全不會影響您辛苦擴充的款式結構喔！**
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 皮友 Q&A -->
+                <div class="p-6 md:p-10 bg-slate-100 rounded-[2rem] border-l-8 border-slate-400 shadow-sm space-y-10">
+                    <h3 class="font-black text-slate-800 text-xl md:text-3xl text-center">💡 皮友常見問題大補帖</h3>
+                    <div class="grid grid-cols-1 gap-8 text-sm md:text-base font-bold text-slate-700">
+                        
+                        <div class="bg-white/70 p-7 rounded-3xl border border-white shadow-sm">
+                            <h4 class="text-[#576d94] mb-3 font-black text-lg">Q1. 我不小心關掉分頁紀錄會飛走嗎？進度會自動儲存嗎？</h4>
+                            <p class="font-medium text-slate-500 leading-relaxed text-sm text-justify"><strong>A: 絕對不會！</strong> 網頁具備「即時自動存檔」功能。只要皮友不主動清理瀏覽器紀錄，皮克敏們會一直乖乖待在原地等妳回來。即使關機重開、關掉分頁也沒問題！</p>
+                        </div>
+
+                        <div class="bg-white/70 p-7 rounded-3xl border border-white shadow-sm">
+                            <h4 class="text-[#576d94] mb-3 font-black text-lg">Q2. 資料儲存原理：到底存在哪裡？(LocalStorage)</h4>
+                            <p class="font-medium text-slate-500 leading-relaxed text-sm text-justify"><strong>A: 存在妳手機的「專屬快取空間」裡！</strong> 這叫 LocalStorage 技術。不需要註冊帳號，瀏覽器會為本圖鑑劃分一塊私人空間存檔，既隱私又快速，不用擔心別人看到妳的進度。</p>
+                        </div>
+
+                        <div class="bg-white/70 p-7 rounded-3xl border border-white shadow-sm">
+                            <h4 class="text-[#576d94] mb-3 font-black text-lg">Q3. 用手機點完，換成新手機紀錄沒了？如何同步或匯入資料？</h4>
+                            <p class="font-medium text-slate-500 leading-relaxed text-sm text-justify"><strong>A: 因為資料是「認設備」的！</strong> 手機跟電腦是兩本獨立的筆記本。想同步？請在舊手機點「💾 備份進度」下載檔案，傳給新手機後按「📂 讀取備份」選取該檔，並於跳出的選項點擊第一項<span class="text-blue-600">「📱 轉移設備」</span>，進度就能完美帶入新版圖鑑中囉！</p>
+                        </div>
+
+                        <div class="bg-white/70 p-7 rounded-3xl border border-white shadow-sm">
+                            <h4 class="text-[#576d94] mb-3 font-black text-lg">Q4. 朋友傳給我最新官方飾品包，我該怎麼匯入才不會覆蓋進度？</h4>
+                            <p class="font-medium text-slate-500 leading-relaxed text-sm text-justify"><strong>A: 請使用「更新款式包」！</strong> 點擊「讀取備份」並選擇朋友傳給您的 JSON 檔後，系統會跳出選項，請務必選擇第二項<span class="text-emerald-600">「✨ 更新款式包 (保留我的進度)」</span>，系統就會聰明地保留您的點擊進度，僅新增或移除必要的飾品欄位給您。</p>
+                        </div>
+
+                        <div class="bg-white/70 p-7 rounded-3xl border border-white shadow-sm">
+                            <h4 class="text-[#576d94] mb-3 font-black text-lg">Q5. 誤觸修正：我不小心點成飾品 💎 怎麼退回？</h4>
+                            <p class="font-medium text-slate-500 leading-relaxed text-sm text-justify"><strong>A: 繼續點下去就對了！</strong> 按鈕是「四段式循環」：未擁有 ➡️ 花盆 🌱 ➡️ 一般 🚶 ➡️ 飾品 💎 ➡️ 變回灰色（未擁有）。只要連點幾下就能修正錯誤囉！</p>
+                        </div>
+
+                        <div class="bg-white/70 p-7 rounded-3xl border border-white shadow-sm">
+                            <h4 class="text-[#576d94] mb-3 font-black text-lg">Q6. 分享進度：如何傳給朋友看我的成果？</h4>
+                            <p class="font-medium text-slate-500 leading-relaxed text-sm text-justify"><strong>A: 下載檔案分享！</strong> 點擊「💾 備份進度」產生的 JSON 檔就像是妳的名片，傳給皮友後，他在自己網頁點「📂 讀取備份」選擇妳傳的檔，就能載入您的最新清單配置。</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="closeHelp()" class="w-full mt-12 py-6 btn-serenity rounded-[3rem] font-black text-xl md:text-2xl shadow-2xl transition-all active:scale-95 border-4 border-white/40 tracking-widest uppercase">皮友們出發吧！</button>
+        </div>
+    </div>
+
+    <!-- Modal: Edit & Add -->
+    <div id="edit-modal" class="fixed inset-0 modal-bg z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-2xl p-8 md:p-12 shadow-2xl overflow-y-auto max-h-[90vh] border-4 border-white/50">
+            <div class="flex justify-between items-center mb-8 border-b-2 border-slate-100 pb-4 text-slate-700">
+                <h2 id="modal-title" class="text-2xl md:text-4xl font-black">項目規格設定</h2>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors"><svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 grid-cols-mobile-single">
+                    <div>
+                        <label class="block text-sm font-black text-slate-400 uppercase mb-2 tracking-widest">飾品名稱</label>
+                        <input type="text" id="input-name" class="w-full p-4 rounded-2xl border-2 border-slate-200 outline-none focus:border-blue-400 font-bold transition-all text-sm md:text-base text-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-black text-slate-400 uppercase mb-2 tracking-widest">分類性質</label>
+                        <select id="input-type" class="w-full p-4 rounded-2xl border-2 border-slate-200 outline-none focus:border-blue-400 font-bold text-slate-800" onchange="toggleDateInput()">
+                            <option value="normal">地點 (常駐)</option>
+                            <option value="event">期間限定</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="date-group" class="hidden">
+                    <div class="flex justify-between items-center mb-2 text-slate-700">
+                        <label class="block text-sm font-black uppercase tracking-widest">活動截止日</label>
+                        <label class="flex items-center gap-2 text-xs font-bold cursor-pointer">
+                            <input type="checkbox" id="input-infinite" onchange="toggleDateFields()"> 無期限限制
+                        </label>
+                    </div>
+                    <input type="date" id="input-date" class="w-full p-4 rounded-2xl border-2 border-slate-200 font-bold text-slate-800">
+                </div>
+                <div>
+                    <label class="block text-sm font-black text-slate-400 uppercase mb-4 tracking-widest text-center md:text-left text-justify">款式與數量設定 (勾選顏色後填寫款式名)</label>
+                    <div id="color-setup-grid" class="grid grid-cols-1 gap-4 grid-cols-mobile-single"></div>
+                </div>
+                <div id="delete-zone" class="hidden pt-8 border-t border-slate-100 text-center">
+                    <button id="btn-delete" onclick="deleteDataWithConfirm()" class="text-rose-500 font-black hover:underline transition-all">🗑️ 移除此項分類與紀錄</button>
+                </div>
+            </div>
+            <div class="mt-12">
+                <button onclick="saveCategory()" class="w-full py-6 btn-serenity rounded-3xl font-black text-xl shadow-xl hover:brightness-110 active:scale-95 transition-all tracking-tighter">💾 儲存並應用</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const COLORS = [
+            { id: 'red', name: '紅', class: 'dot-red' },
+            { id: 'yellow', name: '黃', class: 'dot-yellow' },
+            { id: 'blue', name: '藍', class: 'dot-blue' },
+            { id: 'white', name: '白', class: 'dot-white' },
+            { id: 'purple', name: '紫', class: 'dot-purple' },
+            { id: 'rock', name: '石', class: 'dot-rock' },
+            { id: 'pink', name: '粉', class: 'dot-pink' },
+            { id: 'ice', name: '冰', class: 'dot-ice' }
+        ];
+
+        const STATUS = { NONE: 0, SEEDLING: 1, STANDARD: 2, DECOR: 3 };
+        let state = { categories: [], editingId: null };
+        let searchQuery = "";
+        let pendingImportData = null; // 暫存使用者選擇匯入的檔案資料
+
+        // 載入最新的 JSON 資料庫
+        const initialDBRaw = [
+            {"id":"evt-powder","name":"彩色粉末","type":"event","endDate":"2026-03-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]},{"color":"ice","collected":[0],"labels":[""]}]},
+            {"id":"evt-tea","name":"下午茶","type":"event","endDate":"2026-03-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"std-rest","name":"餐廳 (廚師帽子)","type":"normal","items":[{"color":"red","collected":[0,0],"labels":["一般","稀有"]},{"color":"yellow","collected":[0,0],"labels":["一般","稀有"]},{"color":"blue","collected":[0,0],"labels":["一般","稀有"]},{"color":"white","collected":[0,0],"labels":["一般","稀有"]},{"color":"purple","collected":[0,0],"labels":["一般","稀有"]},{"color":"rock","collected":[0,0],"labels":["一般","稀有"]},{"color":"pink","collected":[0,0],"labels":["一般","稀有"]},{"color":"ice","collected":[0,0],"labels":["一般","稀有"]}],"endDate":""},
+            {"id":"std-cafe","name":"咖啡廳(咖啡杯)","type":"normal","items":[{"color":"red","collected":[0,0],"labels":["一般","稀有"]},{"color":"yellow","collected":[0,0],"labels":["一般","稀有"]},{"color":"blue","collected":[0,0],"labels":["一般","稀有"]},{"color":"white","collected":[0,0],"labels":["一般","稀有"]},{"color":"purple","collected":[0,0],"labels":["一般","稀有"]},{"color":"rock","collected":[0,0],"labels":["一般","稀有"]},{"color":"pink","collected":[0,0],"labels":["一般","稀有"]}],"endDate":""},
+            {"id":"cat-1773754184136","name":"甜點店","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["馬卡龍","甜甜圈"]},{"color":"yellow","collected":[0,0],"labels":["馬卡龍","甜甜圈"]},{"color":"blue","collected":[0,0],"labels":["馬卡龍","甜甜圈"]},{"color":"white","collected":[0,0],"labels":["馬卡龍","甜甜圈"]},{"color":"purple","collected":[0,0],"labels":["馬卡龍","甜甜圈"]},{"color":"rock","collected":[0,0],"labels":["馬卡龍","甜甜圈"]},{"color":"pink","collected":[0,0],"labels":["馬卡龍","甜甜圈"]}]},
+            {"id":"cat-1773754213894","name":"電影院(爆米花)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754233774","name":"藥局(牙刷)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754252574","name":"動物園(蒲公英)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754356240","name":"森林","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["鍬形蟲","橡栗"]},{"color":"yellow","collected":[0,0],"labels":["鍬形蟲","橡栗"]},{"color":"blue","collected":[0,0],"labels":["鍬形蟲","橡栗"]},{"color":"white","collected":[0,0],"labels":["鍬形蟲","橡栗"]},{"color":"purple","collected":[0,0],"labels":["鍬形蟲","橡栗"]},{"color":"rock","collected":[0,0],"labels":["鍬形蟲","橡栗"]},{"color":"pink","collected":[0,0],"labels":["鍬形蟲","橡栗"]},{"color":"ice","collected":[0,0],"labels":["鍬形蟲","橡栗"]}]},
+            {"id":"cat-1773754444708","name":"水邊(擬餌)","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["一般","稀有"]},{"color":"yellow","collected":[0,0],"labels":["一般","稀有"]},{"color":"blue","collected":[0,0],"labels":["一般","稀有"]},{"color":"white","collected":[0,0],"labels":["一般","稀有"]},{"color":"purple","collected":[0,0],"labels":["一般","稀有"]},{"color":"rock","collected":[0,0],"labels":["一般","稀有"]},{"color":"pink","collected":[0,0],"labels":["一般","稀有"]}]},
+            {"id":"cat-1773754479050","name":"郵局(郵票)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754497540","name":"美術館(畫框)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754528890","name":"機場(飛機玩具)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754599570","name":"車站","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["電車紙模型","票券"]},{"color":"yellow","collected":[0,0],"labels":["電車紙模型","票券"]},{"color":"blue","collected":[0,0],"labels":["電車紙模型","票券"]},{"color":"white","collected":[0,0],"labels":["電車紙模型","票券"]},{"color":"purple","collected":[0,0],"labels":["電車紙模型","票券"]},{"color":"rock","collected":[0,0],"labels":["電車紙模型","票券"]},{"color":"pink","collected":[0,0],"labels":["電車紙模型","票券"]}]},
+            {"id":"cat-1773754628154","name":"海灘(貝殼)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754814181","name":"漢堡店(漢堡)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773754895256","name":"便利商店","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["瓶蓋","零食"]},{"color":"yellow","collected":[0,0],"labels":["瓶蓋","零食"]},{"color":"blue","collected":[0,0],"labels":["瓶蓋","零食"]},{"color":"white","collected":[0,0],"labels":["瓶蓋","零食"]},{"color":"purple","collected":[0,0],"labels":["瓶蓋","零食"]},{"color":"rock","collected":[0,0],"labels":["瓶蓋","零食"]},{"color":"pink","collected":[0,0],"labels":["瓶蓋","零食"]}]},
+            {"id":"cat-1773755020226","name":"超市","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0,0],"labels":["蘑菇","香蕉(一般)","香蕉(稀有)"]},{"color":"yellow","collected":[0,0,0],"labels":["蘑菇","香蕉(一般)","香蕉(稀有)"]},{"color":"blue","collected":[0,0,0],"labels":["蘑菇","香蕉(一般)","香蕉(稀有)"]},{"color":"white","collected":[0,0,0],"labels":["蘑菇","香蕉(一般)","香蕉(稀有)"]},{"color":"purple","collected":[0,0,0],"labels":["蘑菇","香蕉(一般)","香蕉(稀有)"]},{"color":"rock","collected":[0,0,0],"labels":["蘑菇","香蕉(一般)","香蕉(稀有)"]},{"color":"pink","collected":[0,0,0],"labels":["蘑菇","香蕉(一般)","香蕉(稀有)"]}]},
+            {"id":"cat-1773755096119","name":"麵包店(法國麵包)","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["一般","稀有"]},{"color":"yellow","collected":[0,0],"labels":["一般","稀有"]},{"color":"blue","collected":[0,0],"labels":["一般","稀有"]},{"color":"white","collected":[0,0],"labels":["一般","稀有"]},{"color":"purple","collected":[0,0],"labels":["一般","稀有"]},{"color":"rock","collected":[0,0],"labels":["一般","稀有"]},{"color":"pink","collected":[0,0],"labels":["一般","稀有"]}]},
+            {"id":"cat-1773755177759","name":"美容院","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["一般","稀有"]},{"color":"yellow","collected":[0,0],"labels":["一般","稀有"]},{"color":"blue","collected":[0,0],"labels":["一般","稀有"]},{"color":"white","collected":[0,0],"labels":["一般","稀有"]},{"color":"purple","collected":[0,0],"labels":["一般","稀有"]},{"color":"rock","collected":[0,0],"labels":["一般","稀有"]},{"color":"pink","collected":[0,0],"labels":["一般","稀有"]}]},
+            {"id":"cat-1773755204037","name":"服裝店(髮圈)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773755297405","name":"公園","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0,0],"labels":["幸運草","四葉幸運草","四葉幸運草(稀有)"]},{"color":"yellow","collected":[0,0,0],"labels":["幸運草","四葉幸運草","四葉幸運草(稀有)"]},{"color":"blue","collected":[0,0,0],"labels":["幸運草","四葉幸運草","四葉幸運草(稀有)"]},{"color":"white","collected":[0,0,0],"labels":["幸運草","四葉幸運草","四葉幸運草(稀有)"]},{"color":"purple","collected":[0,0,0],"labels":["幸運草","四葉幸運草","四葉幸運草(稀有)"]},{"color":"rock","collected":[0,0,0],"labels":["幸運草","四葉幸運草","四葉幸運草(稀有)"]},{"color":"pink","collected":[0,0,0],"labels":["幸運草","四葉幸運草","四葉幸運草(稀有)"]}]},
+            {"id":"cat-1773755367960","name":"圖書館(迷你書)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773756603704","name":"路邊","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]},{"color":"yellow","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]},{"color":"blue","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]},{"color":"white","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]},{"color":"purple","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]},{"color":"rock","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]},{"color":"pink","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]},{"color":"ice","collected":[0,0,0,0,0],"labels":["貼紙(綠)","貼紙(藍)","貼紙(黃)","金幣","金幣(稀有)"]}]},
+            {"id":"cat-1773756629488","name":"壽司餐廳(壽司)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]},{"color":"ice","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773756719890","name":"山丘(山丘別針徽章)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773756751219","name":"體育館(體育館鑰匙圈)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773756784650","name":"雨天","type":"normal","endDate":"","items":[{"color":"blue","collected":[0,0,0],"labels":["帽子1","帽子2","帽子3"]}]},
+            {"id":"cat-1773756808893","name":"下雪","type":"normal","endDate":"","items":[{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"ice","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773756879669","name":"主題樂園(主題樂園門票)","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["飾品1","飾品2"]},{"color":"yellow","collected":[0,0],"labels":["飾品1","飾品2"]},{"color":"blue","collected":[0,0],"labels":["飾品1","飾品2"]}]},
+            {"id":"cat-1773756912284","name":"公車站(公車紙模型)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757009420","name":"義式餐廳","type":"normal","endDate":"","items":[{"color":"red","collected":[0,0],"labels":["披薩","義大利麵"]},{"color":"yellow","collected":[0,0],"labels":["披薩","義大利麵"]},{"color":"blue","collected":[0,0],"labels":["披薩","義大利麵"]},{"color":"white","collected":[0,0],"labels":["披薩","義大利麵"]},{"color":"purple","collected":[0,0],"labels":["披薩","義大利麵"]},{"color":"rock","collected":[0,0],"labels":["披薩","義大利麵"]},{"color":"pink","collected":[0,0],"labels":["披薩","義大利麵"]}]},
+            {"id":"cat-1773757041117","name":"拉麵店(拉麵鑰匙圈)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757072775","name":"橋樑(橋樑別針)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757093757","name":"飯店(飯店備品)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757139711","name":"化妝品商店(化妝品)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757162320","name":"神社和寺廟","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757255435","name":"電器行(電池)","type":"normal","endDate":"","items":[{"color":"yellow","collected":[0,0,0,0,0,0,0,0],"labels":["電池1","電池2","電池3","電池4","電池5","電池6","仙女燈1","仙女燈2"]}]},
+            {"id":"cat-1773757284375","name":"咖哩餐廳(一碗咖哩)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757306132","name":"五金行(工具)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757387979","name":"大學&學院(校徽胸針)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757433405","name":"墨西哥餐廳(塔可餅)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757460481","name":"自助洗衣店&乾洗店","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757484906","name":"韓國餐廳(韓國泡菜)","type":"normal","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]},{"color":"ice","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757506487","name":"瑪莉歐帽子","type":"event","endDate":"","items":[{"color":"blue","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757540923","name":"農曆新年飾品：金色","type":"event","endDate":"2026-02-28","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757580903","name":"連指手套","type":"event","endDate":"2026-01-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757629514","name":"2024眼鏡","type":"event","endDate":"2025-12-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757662454","name":"禮物貼紙(金色)","type":"event","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757684304","name":"裝飾球","type":"event","endDate":"2025-12-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757720673","name":"2025派對拉炮","type":"event","endDate":"2026-01-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757738980","name":"巧克力","type":"event","endDate":"2026-02-28","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757785397","name":"四週年紀念零食","type":"event","endDate":"2025-12-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757810337","name":"2025裝飾","type":"event","endDate":"2025-12-31","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]},{"color":"ice","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757822275","name":"奶嘴","type":"event","endDate":"","items":[{"color":"red","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757857403","name":"日式年菜","type":"event","endDate":"2026-02-28","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]},{"color":"ice","collected":[0],"labels":[""]}]},
+            {"id":"cat-1773757879162","name":"2026巧克力","type":"event","endDate":"2026-02-28","items":[{"color":"red","collected":[0],"labels":[""]},{"color":"yellow","collected":[0],"labels":[""]},{"color":"blue","collected":[0],"labels":[""]},{"color":"white","collected":[0],"labels":[""]},{"color":"purple","collected":[0],"labels":[""]},{"color":"rock","collected":[0],"labels":[""]},{"color":"pink","collected":[0],"labels":[""]},{"color":"ice","collected":[0],"labels":[""]}]}
+        ];
+
+        // 自訂美化提示訊息框
+        window.showToast = function(msg, type='info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-10 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full font-black text-white shadow-2xl z-[100] transition-all duration-300 translate-y-10 opacity-0 ${type==='error'?'bg-rose-500':'bg-emerald-500'} pointer-events-none`;
+            toast.style.whiteSpace = 'nowrap';
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-10', 'opacity-0'); }, 10);
+            setTimeout(() => { 
+                toast.classList.add('translate-y-10', 'opacity-0'); 
+                setTimeout(() => toast.remove(), 300); 
+            }, 3000);
+        };
+
+        // 核心合併邏輯：將 progressSource 的點擊進度，安全轉移至 structureSource 的最新結構上
+        function mergeData(structureSource, progressSource) {
+            // 1. 深拷貝您指定的結構作為基底
+            let newState = { categories: JSON.parse(JSON.stringify(structureSource.categories)), editingId: null };
+
+            // 2. 將這份新結構的所有點擊進度強制歸零 (確保不帶入任何舊有的干擾資料)
+            newState.categories.forEach(cat => {
+                cat.items.forEach(item => {
+                    item.collected = item.collected.map(() => 0);
+                });
+            });
+
+            if (!progressSource || !progressSource.categories) return newState;
+
+            // 3. 遍歷欲保留進度的來源，把點擊狀態完美貼回新結構
+            progressSource.categories.forEach(progCat => {
+                const targetCat = newState.categories.find(c => c.id === progCat.id);
+                if (targetCat) {
+                    progCat.items.forEach(progItem => {
+                        const targetItem = targetCat.items.find(i => i.color === progItem.color);
+                        if (targetItem) {
+                            // 逐一貼合進度。若新結構有擴充(如第3款幸運草)，這裡只貼合前2款，第3款安全保留剛設定的 0
+                            for(let i = 0; i < progItem.collected.length && i < targetItem.collected.length; i++) {
+                                targetItem.collected[i] = progItem.collected[i];
+                            }
+                        }
+                    });
+                } else {
+                    // 若這類別是手動新增的(如您自己創的)，新結構檔沒有，則原封不動保留下來
+                    newState.categories.push(JSON.parse(JSON.stringify(progCat)));
+                }
+            });
+
+            return newState;
+        }
+
+        // 關閉載入面板
+        function closeImportModal() {
+            pendingImportData = null;
+            document.getElementById('import-modal').classList.add('hidden');
+        }
+
+        // 執行各種載入與合併動作
+        function executeImport(mode) {
+            if (!pendingImportData) return;
+            
+            if (mode === 'import_progress') {
+                // 【轉移設備情境】: 結構使用本地的 state (因網頁有最新款)，進度使用備份檔 (pendingImportData)
+                state = mergeData(state, pendingImportData);
+                window.showToast("已成功載入進度，並保留最新款式！📱", "success");
+            } else if (mode === 'import_structure') {
+                // 【朋友更新情境】: 結構使用朋友傳的備份檔 (pendingImportData)，進度使用本地的 state
+                state = mergeData(pendingImportData, state);
+                window.showToast("已更新圖鑑款式，並保留您的進度！✨", "success");
+            } else if (mode === 'overwrite') {
+                // 【完全取代情境】: 結構與進度一律採用備份檔
+                state = pendingImportData;
+                window.showToast("已完全還原為檔案狀態！♻️", "success");
+            }
+            
+            save(); 
+            render();
+            closeImportModal();
+        }
+
+        function init() {
+            const saved = localStorage.getItem('pikmin_master_final_v26');
+            if (saved) { 
+                try {
+                    state = JSON.parse(saved); 
+                } catch(e) {
+                    state = { categories: JSON.parse(JSON.stringify(initialDBRaw)), editingId: null }; 
+                }
+            } else { 
+                state = { categories: JSON.parse(JSON.stringify(initialDBRaw)), editingId: null }; 
+            }
+            save();
+            render();
+            if (!localStorage.getItem('pikmin_v26_guide_update')) { 
+                openHelp(); 
+                localStorage.setItem('pikmin_v26_guide_update', 'true'); 
+            }
+        }
+
+        function save() {
+            localStorage.setItem('pikmin_master_final_v26', JSON.stringify(state));
+            updateDashboard();
+            renderJumpList();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            render();
+        }
+
+        function renderJumpList() {
+            const listEvent = document.getElementById('jump-list-event');
+            const listNormal = document.getElementById('jump-list-normal');
+            listEvent.innerHTML = listNormal.innerHTML = '';
+            
+            const filteredCats = state.categories.filter(cat => cat.name.toLowerCase().includes(searchQuery));
+            
+            filteredCats.forEach(cat => {
+                const btn = document.createElement('a');
+                btn.href = `#${cat.id}`;
+                btn.className = 'jump-link';
+                btn.innerText = cat.name;
+                if (cat.type === 'event') listEvent.appendChild(btn);
+                else listNormal.appendChild(btn);
+            });
+        }
+
+        function render() {
+            const activeContainer = document.getElementById('active-events');
+            const expiredContainer = document.getElementById('expired-events');
+            const normalContainer = document.getElementById('normal-decors');
+            const today = new Date().toISOString().split('T')[0];
+            
+            activeContainer.innerHTML = expiredContainer.innerHTML = normalContainer.innerHTML = '';
+            
+            let visibleCount = 0;
+            const filteredCats = state.categories.filter(cat => cat.name.toLowerCase().includes(searchQuery));
+
+            filteredCats.forEach(cat => {
+                visibleCount++;
+                const card = createCard(cat);
+                if (cat.type === 'event') {
+                    if (!cat.endDate || cat.endDate >= today) activeContainer.appendChild(card);
+                    else expiredContainer.appendChild(card);
+                } else { 
+                    normalContainer.appendChild(card); 
+                }
+            });
+
+            document.getElementById('jump-section').style.display = visibleCount > 0 ? 'block' : 'none';
+            document.getElementById('event-section').style.display = (activeContainer.children.length > 0 || expiredContainer.children.length > 0) ? 'block' : 'none';
+            document.getElementById('normal-section').style.display = normalContainer.children.length > 0 ? 'block' : 'none';
+            
+            const noResults = document.getElementById('no-results');
+            if (visibleCount === 0 && searchQuery) {
+                document.getElementById('search-keyword').innerText = document.getElementById('search-input').value;
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            renderJumpList();
+            updateDashboard();
+        }
+
+        function createCard(cat) {
+            const div = document.createElement('div');
+            div.id = cat.id;
+            div.className = 'glass-card p-6 md:p-8 relative group transition-all hover:shadow-xl border-b-8 border-white/40 scroll-mt-32';
+            const header = document.createElement('div');
+            header.className = 'flex justify-between items-start mb-6';
+            header.innerHTML = `
+                <div class="flex-1">
+                    <h3 class="font-black text-lg md:text-xl text-slate-800 flex items-center gap-3">
+                        ${cat.name}
+                        <button onclick="openEditModal('${cat.id}')" class="p-2 bg-white/60 border border-slate-200 rounded-xl text-slate-400 hover:text-blue-500 shadow-sm transition-all">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00 2 2h11a2 2 0 00 2-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        </button>
+                    </h3>
+                    ${cat.endDate ? `<span class="text-[10px] font-black text-rose-500 bg-white/80 px-3 py-1 rounded-full mt-2 inline-block border border-rose-100 shadow-sm tracking-wider uppercase">截止: ${cat.endDate}</span>` : (cat.type==='event'?'<span class="text-[10px] font-black text-emerald-500 bg-white/80 px-3 py-1 rounded-full mt-2 inline-block border border-emerald-100 shadow-sm">無期限限制</span>':'')}
+                </div>
+            `;
+            div.appendChild(header);
+            const grid = document.createElement('div');
+            grid.className = 'flex flex-wrap gap-x-5 gap-y-12';
+            cat.items.forEach(item => {
+                const colorInfo = COLORS.find(c => c.id === item.color);
+                item.collected.forEach((status, idx) => {
+                    const dotWrap = document.createElement('div');
+                    dotWrap.className = 'relative flex flex-col items-center gap-2.5';
+                    const dot = document.createElement('div');
+                    dot.className = `pikmin-dot ${colorInfo.class} st-${status}`;
+                    dot.innerText = colorInfo.name;
+                    if (status !== STATUS.NONE) {
+                        const badge = document.createElement('div');
+                        badge.className = 'status-badge';
+                        badge.innerText = status === STATUS.SEEDLING ? '🌱' : (status === STATUS.STANDARD ? '🚶' : '💎');
+                        dot.appendChild(badge);
+                    }
+                    dot.onclick = () => { item.collected[idx] = (item.collected[idx] + 1) % 4; save(); render(); };
+                    dotWrap.appendChild(dot);
+                    if (item.labels && item.labels[idx]) {
+                        const lbl = document.createElement('span');
+                        lbl.className = 'text-[11px] font-black text-slate-500 bg-white/40 px-2 rounded text-center min-w-[38px]';
+                        lbl.innerText = item.labels[idx];
+                        dotWrap.appendChild(lbl);
+                    }
+                    grid.appendChild(dotWrap);
+                });
+            });
+            div.appendChild(grid);
+            return div;
+        }
+
+        function updateDashboard() {
+            let total = 0, seedling = 0, standard = 0, decor = 0;
+            let hunts = [];
+            const today = new Date().toISOString().split('T')[0];
+            
+            state.categories.forEach(cat => {
+                const isUrgent = cat.type === 'event' && (!cat.endDate || cat.endDate >= today);
+                cat.items.forEach(item => {
+                    item.collected.forEach(s => {
+                        total++;
+                        if (s === STATUS.SEEDLING) seedling++;
+                        else if (s === STATUS.STANDARD) standard++;
+                        else if (s === STATUS.DECOR) decor++;
+                        else if (isUrgent) {
+                            const cName = COLORS.find(c=>c.id===item.color).name;
+                            hunts.push(`${cat.name.split(' ')[0]}(${cName})`);
+                        }
+                    });
+                });
+            });
+            
+            const per = total > 0 ? Math.round((decor/total)*100) : 0;
+            document.getElementById('progress-bar').style.width = `${per}%`;
+            document.getElementById('progress-text').innerText = `${per}% (${decor}/${total})`;
+            document.getElementById('stat-seedling').innerText = `花盆: ${seedling}`;
+            document.getElementById('stat-standard').innerText = `一般: ${standard}`;
+            document.getElementById('stat-decor').innerText = `飾品: ${decor}`;
+            document.getElementById('today-hunt').innerText = hunts.length > 0 ? `還缺：${hunts.slice(0,2).join(', ')}等` : '全員大滿貫！💎';
+        }
+
+        function toggleDateInput() { 
+            const type = document.getElementById('input-type').value; 
+            document.getElementById('date-group').classList.toggle('hidden', type !== 'event'); 
+            toggleDateFields(); 
+        }
+        
+        function toggleDateFields() { 
+            const isInfinite = document.getElementById('input-infinite').checked; 
+            document.getElementById('input-date').disabled = isInfinite; 
+            if (isInfinite) document.getElementById('input-date').value = ""; 
+        }
+
+        let resetStage = 0;
+        function resetDataWithConfirm() {
+            const btn = document.getElementById('btn-reset');
+            if (resetStage === 0) {
+                resetStage = 1; 
+                btn.innerText = "按第 2 次確認清除"; 
+                btn.classList.add('danger-stage');
+                setTimeout(() => { 
+                    if (resetStage === 1) { 
+                        resetStage = 0; btn.innerText = "🧹 恢復預設"; btn.classList.remove('danger-stage'); 
+                    } 
+                }, 3500);
+            } else {
+                // 恢復預設時絕對不會覆蓋結構款式，僅將所有收集的點擊狀態重置為 0
+                state.categories.forEach(cat => {
+                    cat.items.forEach(item => {
+                        item.collected = item.collected.map(() => 0);
+                    });
+                });
+                
+                save(); render(); resetStage = 0;
+                btn.innerText = "🧹 恢復預設"; 
+                btn.classList.remove('danger-stage'); 
+                window.showToast("已清除所有點擊進度，並為您保留目前的飾品款式！✨", "success");
+            }
+        }
+
+        let deleteStage = 0;
+        function deleteDataWithConfirm() {
+            const btn = document.getElementById('btn-delete');
+            if (deleteStage === 0) {
+                deleteStage = 1;
+                btn.innerText = "⚠️ 再次點擊以永久刪除";
+                btn.classList.add('danger-stage');
+                setTimeout(() => {
+                    if(deleteStage === 1) {
+                        deleteStage = 0; btn.innerText = "🗑️ 移除此項分類與紀錄"; btn.classList.remove('danger-stage');
+                    }
+                }, 3500);
+            } else {
+                state.categories = state.categories.filter(c => c.id !== state.editingId); 
+                save(); render(); closeModal();
+                deleteStage = 0;
+                btn.innerText = "🗑️ 移除此項分類與紀錄"; btn.classList.remove('danger-stage');
+                window.showToast("已刪除該項分類！", "success");
+            }
+        }
+
+        function renderColorSetup(existingItems = []) {
+            const grid = document.getElementById('color-setup-grid');
+            grid.innerHTML = '';
+            COLORS.forEach(c => {
+                const item = existingItems.find(i => i.color === c.id);
+                const isChecked = !!item;
+                const qty = isChecked ? item.collected.length : 1;
+                const div = document.createElement('div');
+                div.className = 'p-5 bg-white/40 rounded-3xl border border-white flex flex-col gap-4 shadow-sm';
+                div.innerHTML = `
+                    <div class="flex items-center gap-4 text-slate-800">
+                        <input type="checkbox" id="chk-${c.id}" class="w-6 h-6 rounded-lg accent-emerald-500" ${isChecked?'checked':''} onchange="updateQtyUI('${c.id}')">
+                        <span class="pikmin-dot ${c.class} st-3 !w-11 !h-11 text-[11px] shadow-sm">${c.name}</span>
+                        <div class="flex-1 flex items-center gap-2">
+                            <span class="text-xs font-black text-slate-400">數量:</span>
+                            <input type="number" id="qty-${c.id}" class="w-16 p-2 rounded-xl border-2 border-slate-100 font-black text-center text-sm" value="${qty}" min="1" ${!isChecked?'disabled':''} onchange="updateQtyUI('${c.id}')">
+                        </div>
+                    </div>
+                    <div id="labels-${c.id}" class="grid grid-cols-2 gap-2 ${!isChecked?'hidden':''} grid-cols-mobile-single"></div>
+                `;
+                grid.appendChild(div);
+                if (isChecked) updateQtyUI(c.id, item.labels);
+            });
+        }
+
+        function updateQtyUI(id, existingLabels) {
+            const isChecked = document.getElementById(`chk-${id}`).checked;
+            const qtyInput = document.getElementById(`qty-${id}`);
+            const labelGrid = document.getElementById(`labels-${id}`);
+            qtyInput.disabled = !isChecked; 
+            labelGrid.classList.toggle('hidden', !isChecked);
+            
+            if (isChecked) {
+                const count = parseInt(qtyInput.value) || 1;
+                
+                let currentValues = [];
+                if (existingLabels !== undefined) {
+                    currentValues = existingLabels;
+                } else {
+                    Array.from(labelGrid.querySelectorAll('input')).forEach(i => currentValues.push(i.value));
+                }
+
+                labelGrid.innerHTML = '';
+                for (let i = 0; i < count; i++) {
+                    const input = document.createElement('input');
+                    input.type = 'text'; 
+                    input.placeholder = `名稱`;
+                    input.lang = 'zh-TW';
+                    input.className = 'p-2.5 rounded-xl border-2 border-slate-50 text-[11px] font-bold outline-none focus:border-rose-200 bg-white/80 text-slate-800';
+                    input.value = currentValues[i] || ''; 
+                    labelGrid.appendChild(input);
+                }
+            }
+        }
+
+        function openAddModal() { 
+            state.editingId = null; 
+            document.getElementById('modal-title').innerText = "新增飾品分類"; 
+            document.getElementById('input-name').value = ""; 
+            document.getElementById('input-type').value = "normal"; 
+            document.getElementById('input-date').value = ""; 
+            document.getElementById('input-infinite').checked = false; 
+            document.getElementById('delete-zone').classList.add('hidden'); 
+            renderColorSetup(); 
+            toggleDateInput(); 
+            const modal = document.getElementById('edit-modal');
+            modal.classList.remove('hidden'); 
+            modal.querySelector('.glass-card').scrollTop = 0;
+        }
+
+        function openEditModal(id) { 
+            const cat = state.categories.find(c => c.id === id); 
+            state.editingId = id; 
+            document.getElementById('modal-title').innerText = "修改項目規格"; 
+            document.getElementById('input-name').value = cat.name; 
+            document.getElementById('input-type').value = cat.type; 
+            document.getElementById('input-date').value = cat.endDate || ""; 
+            document.getElementById('input-infinite').checked = !cat.endDate && cat.type === 'event'; 
+            document.getElementById('delete-zone').classList.remove('hidden'); 
+            renderColorSetup(cat.items); 
+            toggleDateInput(); 
+            const modal = document.getElementById('edit-modal');
+            modal.classList.remove('hidden'); 
+            modal.querySelector('.glass-card').scrollTop = 0;
+        }
+        
+        function saveCategory() {
+            const name = document.getElementById('input-name').value;
+            const type = document.getElementById('input-type').value;
+            const isInfinite = document.getElementById('input-infinite').checked;
+            const endDate = isInfinite ? "" : document.getElementById('input-date').value;
+            if (!name) return window.showToast("請輸入分類名稱喔！", "error");
+            
+            const items = [];
+            COLORS.forEach(c => { 
+                if (document.getElementById(`chk-${c.id}`).checked) { 
+                    const count = parseInt(document.getElementById(`qty-${c.id}`).value) || 1; 
+                    const labels = Array.from(document.getElementById(`labels-${c.id}`).querySelectorAll('input')).map(i => i.value); 
+                    items.push({ color: c.id, collected: new Array(count).fill(STATUS.NONE), labels }); 
+                } 
+            });
+            
+            if (state.editingId) { 
+                const cat = state.categories.find(c => c.id === state.editingId); 
+                items.forEach(ni => { 
+                    const old = cat.items.find(oi => oi.color === ni.color); 
+                    if (old) ni.collected = ni.collected.map((s, idx) => old.collected[idx] !== undefined ? old.collected[idx] : STATUS.NONE); 
+                }); 
+                cat.name = name; cat.type = type; cat.endDate = endDate; cat.items = items; 
+            } else { 
+                state.categories.push({ id: 'cat-' + Date.now(), name, type, endDate, items }); 
+            }
+            save(); render(); closeModal();
+            window.showToast("已成功儲存！", "success");
+        }
+        
+        function closeModal() { document.getElementById('edit-modal').classList.add('hidden'); }
+
+        function openHelp() { 
+            const modal = document.getElementById('help-modal');
+            modal.classList.remove('hidden'); 
+            modal.querySelector('.glass-card').scrollTop = 0;
+        }
+        
+        function closeHelp() { document.getElementById('help-modal').classList.add('hidden'); }
+        function triggerImport() { document.getElementById('importFile').click(); }
+        
+        function exportData() { 
+            const a = document.createElement('a'); 
+            a.href = URL.createObjectURL(new Blob([JSON.stringify(state)], {type:'application/json'})); 
+            a.download = `Pikmin_Backup_Final.json`; 
+            a.click(); 
+        }
+        
+        function importData(e) {
+            const file = e.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => { 
+                try { 
+                    const imported = JSON.parse(evt.target.result); 
+                    if (imported.categories) { 
+                        pendingImportData = imported;
+                        document.getElementById('import-modal').classList.remove('hidden');
+                    } 
+                } catch(err) { 
+                    window.showToast("讀取失敗，檔案可能損毀。", "error"); 
+                } 
+            };
+            reader.readAsText(file);
+            e.target.value = ''; 
+        }
+        
+        window.onload = init;
+    </script>
+</body>
+</html>
